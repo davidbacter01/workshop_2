@@ -5,8 +5,7 @@ class Quiz {
         this.answerButtons = document.getElementById('answer-buttons');
         this.feedback = document.getElementById('feedback');
         this.nextButton = document.getElementById('next-button');
-        this.showQuestion(this.questions[0]);
-
+         this.showQuestion(this.questions[0]);
     }
 
     showQuestion(question) {
@@ -20,10 +19,26 @@ class Quiz {
             buttonElement.textContent = answer.text;
             this.answerButtons.appendChild(buttonContainer);
             buttonContainer.appendChild(buttonElement);
+            buttonElement.addEventListener('click', () => this.selectAnswers(answer, question, buttonElement));
 
         }
     }
+
+    selectAnswers(answer, question, button) {
+        const correct = answer.correct;
+        if (correct) {
+            this.nextButton.classList.remove('hide');
+            this.feedback.textContent = question.explanation;
+            button.classList.add('correct');
+            this.feedback.classList.add('text-correct');
+        } else {
+            button.classList.add('wrong');
+            this.feedback.textContent = 'Răspuns incorect. Te rog să încerci din nou';
+            this.feedback.classList.add('text-wrong');
+        }
+    }
 }
+
 
 async function initQuiz() {
     const fileContent = await fetch('./questions.json');
